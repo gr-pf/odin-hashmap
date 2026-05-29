@@ -5,6 +5,7 @@ class HashMap {
     this.loadFactor = loadFactor;
     this.capacity = capacity;
     this.length = 0;
+    this.array = Array(capacity).fill(null);
   }
 
   /**
@@ -27,5 +28,32 @@ class HashMap {
     return hashCode;
   }
 
-  set(key, value) {}
+  set(key, value) {
+    const index = this.hash(key);
+
+    // Implémenter le cas où key est déjà dans la HM
+
+    if (this.array[index] === null) {
+      const node = new Node({ key, value });
+      this.array[index] = node;
+    } else {
+      let current = this.array[index];
+      while (current.next) {
+        current = current.next;
+      }
+      current.next = new Node({ key, value });
+    }
+
+    this.length++;
+
+    if (this.length > this.capacity * this.loadFactor) {
+      const updatedCapatity = this.capacity * 2;
+      const tmpArray = Array(updatedCapatity).fill(null);
+
+      // Reste à implémenter la logique pour transférer les valeurs stockés dans l'actuelle array dans la nouvelle array
+
+      this.capacity = updatedCapatity;
+      this.array = tmpArray;
+    }
+  }
 }
