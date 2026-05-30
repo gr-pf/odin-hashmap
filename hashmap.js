@@ -148,18 +148,42 @@ export class HashMap {
   }
 
   clear() {
-    this.#array = new Array(this.#capacity).fill(null);
+    this.#array = Array(this.#capacity).fill(null);
     this.#length = 0;
   }
 
   keys() {
-    // à implémenter
-    // returns an array containing all the keys inside the hash map.
+    const keys = [];
+
+    for (const bucket of this.#array) {
+      if (bucket === null) {
+        continue;
+      }
+      let current = bucket;
+      while (current) {
+        keys.push(current.value.key);
+        current = current.next;
+      }
+    }
+
+    return keys;
   }
 
   values() {
-    // à implémenter
-    // returns an array containing all the values.
+    const values = [];
+
+    for (const bucket of this.#array) {
+      if (bucket === null) {
+        continue;
+      }
+      let current = bucket;
+      while (current) {
+        values.push(current.value.value);
+        current = current.next;
+      }
+    }
+
+    return values;
   }
 
   entries() {
