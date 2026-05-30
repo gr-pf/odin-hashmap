@@ -145,4 +145,9 @@ export class HashMap {
   length() {
     return this.#length;
   }
+
+  clear() {
+    this.#array = new Array(this.#capacity).fill(null);
+    this.#length = 0;
+  }
 }
