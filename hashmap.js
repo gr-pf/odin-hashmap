@@ -187,7 +187,19 @@ export class HashMap {
   }
 
   entries() {
-    // à implémenter
-    // returns an array that contains each key, value pair. Example: [[firstKey, firstValue], [secondKey, secondValue]]
+    const entries = [];
+
+    for (const bucket of this.#array) {
+      if (bucket === null) {
+        continue;
+      }
+      let current = bucket;
+      while (current) {
+        values.push([current.value.key, current.value.value]);
+        current = current.next;
+      }
+    }
+
+    return entries;
   }
 }
