@@ -31,17 +31,24 @@ class HashMap {
   set(key, value) {
     const index = this.hash(key);
 
-    // Implémenter le cas où key est déjà dans la HM
-
+    let setValue = false;
     if (this.array[index] === null) {
       const node = new Node({ key, value });
       this.array[index] = node;
+      setValue = true;
     } else {
       let current = this.array[index];
-      while (current.next) {
+      while (current.next && !setValue) {
+        if (current.value.key == key) {
+          current.value.value == value;
+          setValue = true;
+        }
         current = current.next;
       }
-      current.next = new Node({ key, value });
+      if (!setValue) {
+        current.next = new Node({ key, value });
+        setValue = true;
+      }
     }
 
     this.length++;
@@ -50,7 +57,32 @@ class HashMap {
       const updatedCapatity = this.capacity * 2;
       const tmpArray = Array(updatedCapatity).fill(null);
 
-      // Reste à implémenter la logique pour transférer les valeurs stockés dans l'actuelle array dans la nouvelle array
+      for (const bucket of this.array) {
+        if (bucket === null) {
+          continue;
+        }
+        let current = bucket;
+
+        while (current) {
+          const currentKey = current.value.key;
+          const currentValue = current.value.key;
+          const index = this.hash(currentKey);
+
+          if (tmpArray[index] === null) {
+            const node = new Node({ key: currentKey, value: currentValue });
+            tmpArray[index] = node;
+          } else {
+            let currentTmp = tmpArray[index];
+            while (currentTmp.next) {
+              currentTmp = currentTmp.next;
+            }
+            currentTmp.next = new Node({
+              key: currentKey,
+              value: currentValue,
+            });
+          }
+        }
+      }
 
       this.capacity = updatedCapatity;
       this.array = tmpArray;
