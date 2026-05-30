@@ -140,6 +140,7 @@ export class HashMap {
 
   remove(key) {
     // à implémenter
+    // takes a key as an argument. If the given key is in the hash map, it should remove the entry with that key and return true. If the key isn’t in the hash map, it should return false.
   }
 
   length() {
@@ -149,5 +150,20 @@ export class HashMap {
   clear() {
     this.#array = new Array(this.#capacity).fill(null);
     this.#length = 0;
+  }
+
+  keys() {
+    // à implémenter
+    // returns an array containing all the keys inside the hash map.
+  }
+
+  values() {
+    // à implémenter
+    // returns an array containing all the values.
+  }
+
+  entries() {
+    // à implémenter
+    // returns an array that contains each key, value pair. Example: [[firstKey, firstValue], [secondKey, secondValue]]
   }
 }
