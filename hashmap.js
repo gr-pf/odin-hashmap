@@ -1,6 +1,6 @@
 import { Node } from "./node.js";
 
-class HashMap {
+export class HashMap {
   constructor(loadFactor = 0.75, capacity = 16) {
     this.loadFactor = loadFactor;
     this.capacity = capacity;
@@ -38,9 +38,13 @@ class HashMap {
       setValue = true;
     } else {
       let current = this.array[index];
+      if (current.value.key === key) {
+        current.value.value = value;
+        setValue = true;
+      }
       while (current.next && !setValue) {
-        if (current.value.key == key) {
-          current.value.value == value;
+        if (current.value.key === key) {
+          current.value.value = value;
           setValue = true;
         }
         current = current.next;
@@ -91,7 +95,7 @@ class HashMap {
 
   get(key) {
     const index = this.hash(key);
-    if (index < 0 || index >= buckets.length) {
+    if (index < 0 || index >= this.capacity) {
       throw new Error("Trying to access index out of bounds");
     }
 
