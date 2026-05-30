@@ -1,11 +1,16 @@
 import { Node } from "./node.js";
 
 export class HashMap {
+  #loadFactor;
+  #capacity;
+  #length;
+  #array;
+
   constructor(loadFactor = 0.75, capacity = 16) {
-    this.loadFactor = loadFactor;
-    this.capacity = capacity;
-    this.length = 0;
-    this.array = Array(capacity).fill(null);
+    this.#loadFactor = loadFactor;
+    this.#capacity = capacity;
+    this.#length = 0;
+    this.#array = Array(capacity).fill(null);
   }
 
   /**
@@ -22,7 +27,7 @@ export class HashMap {
 
     const primeNumber = 31;
     for (let i = 0; i < key.length; i++) {
-      hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
+      hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.#capacity;
     }
 
     return hashCode;
@@ -32,12 +37,12 @@ export class HashMap {
     const index = this.hash(key);
 
     let setValue = false;
-    if (this.array[index] === null) {
+    if (this.#array[index] === null) {
       const node = new Node({ key, value });
-      this.array[index] = node;
+      this.#array[index] = node;
       setValue = true;
     } else {
-      let current = this.array[index];
+      let current = this.#array[index];
       if (current.value.key === key) {
         current.value.value = value;
         setValue = true;
@@ -55,13 +60,13 @@ export class HashMap {
       }
     }
 
-    this.length++;
+    this.#length++;
 
-    if (this.length > this.capacity * this.loadFactor) {
-      const updatedCapatity = this.capacity * 2;
+    if (this.#length > this.#capacity * this.#loadFactor) {
+      const updatedCapatity = this.#capacity * 2;
       const tmpArray = Array(updatedCapatity).fill(null);
 
-      for (const bucket of this.array) {
+      for (const bucket of this.#array) {
         if (bucket === null) {
           continue;
         }
@@ -88,21 +93,21 @@ export class HashMap {
         }
       }
 
-      this.capacity = updatedCapatity;
-      this.array = tmpArray;
+      this.#capacity = updatedCapatity;
+      this.#array = tmpArray;
     }
   }
 
   get(key) {
     const index = this.hash(key);
-    if (index < 0 || index >= this.capacity) {
+    if (index < 0 || index >= this.#capacity) {
       throw new Error("Trying to access index out of bounds");
     }
 
-    if (this.array[index] === null) {
+    if (this.#array[index] === null) {
       return null;
     }
-    let current = this.array[index];
+    let current = this.#array[index];
     while (current) {
       if (current.value.key === key) {
         return current.value.value;
@@ -115,14 +120,14 @@ export class HashMap {
 
   has(key) {
     const index = this.hash(key);
-    if (index < 0 || index >= this.capacity) {
+    if (index < 0 || index >= this.#capacity) {
       throw new Error("Trying to access index out of bounds");
     }
 
-    if (this.array[index] === null) {
+    if (this.#array[index] === null) {
       return false;
     }
-    let current = this.array[index];
+    let current = this.#array[index];
     while (current) {
       if (current.value.key === key) {
         return true;
@@ -131,5 +136,13 @@ export class HashMap {
     }
 
     return false;
+  }
+
+  remove(key) {
+    // à implémenter
+  }
+
+  length() {
+    return this.#length;
   }
 }
