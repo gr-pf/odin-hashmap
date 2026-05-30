@@ -112,4 +112,24 @@ export class HashMap {
 
     return null;
   }
+
+  has(key) {
+    const index = this.hash(key);
+    if (index < 0 || index >= this.capacity) {
+      throw new Error("Trying to access index out of bounds");
+    }
+
+    if (this.array[index] === null) {
+      return false;
+    }
+    let current = this.array[index];
+    while (current) {
+      if (current.value.key === key) {
+        return true;
+      }
+      current = current.next;
+    }
+
+    return false;
+  }
 }
