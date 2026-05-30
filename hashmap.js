@@ -203,3 +203,5 @@ export class HashMap {
     return entries;
   }
 }
+
+// reste à implémenter remove et corriger lors du changement de capacité
