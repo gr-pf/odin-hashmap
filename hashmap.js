@@ -195,7 +195,7 @@ export class HashMap {
       }
       let current = bucket;
       while (current) {
-        values.push([current.value.key, current.value.value]);
+        entries.push([current.value.key, current.value.value]);
         current = current.next;
       }
     }
