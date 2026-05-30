@@ -88,4 +88,24 @@ class HashMap {
       this.array = tmpArray;
     }
   }
+
+  get(key) {
+    const index = this.hash(key);
+    if (index < 0 || index >= buckets.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
+
+    if (this.array[index] === null) {
+      return null;
+    }
+    let current = this.array[index];
+    while (current) {
+      if (current.value.key === key) {
+        return current.value.value;
+      }
+      current = current.next;
+    }
+
+    return null;
+  }
 }
