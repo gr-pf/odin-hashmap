@@ -1,6 +1,6 @@
 import { Node } from "./node.js";
 
-type Record = {
+type KeyValuePair = {
   key: string;
   value: any;
 };
@@ -9,7 +9,7 @@ export class HashMap {
   #loadFactor: number;
   #capacity: number;
   #length: number;
-  #array: Array<Node<Record> | null>;
+  #array: Array<Node<KeyValuePair> | null>;
 
   constructor(loadFactor = 0.75, capacity = 16) {
     this.#loadFactor = loadFactor;
@@ -33,11 +33,11 @@ export class HashMap {
     return hashCode;
   }
 
-  #setKeyValue(key: string, value: any, arr: Array<Node<Record> | null>) {
+  #setKeyValue(key: string, value: any, arr: Array<Node<KeyValuePair> | null>) {
     const index = this.hash(key);
 
     if (arr[index] === null) {
-      const node = new Node<Record>({ key, value });
+      const node = new Node<KeyValuePair>({ key, value });
       arr[index] = node;
     } else {
       let current = arr[index];
@@ -55,7 +55,7 @@ export class HashMap {
         current = current.next;
       }
 
-      current.next = new Node<Record>({ key, value });
+      current.next = new Node<KeyValuePair>({ key, value });
     }
     return 1;
   }
@@ -94,7 +94,7 @@ export class HashMap {
     if (this.#array[index] === null) {
       return null;
     }
-    let current: Node<Record> | null = this.#array[index];
+    let current: Node<KeyValuePair> | null = this.#array[index];
     while (current) {
       if (current.value.key === key) {
         return current.value.value;
@@ -114,7 +114,7 @@ export class HashMap {
     if (this.#array[index] === null) {
       return false;
     }
-    let current: Node<Record> | null = this.#array[index];
+    let current: Node<KeyValuePair> | null = this.#array[index];
     while (current) {
       if (current.value.key === key) {
         return true;
@@ -135,7 +135,7 @@ export class HashMap {
       return false;
     }
 
-    let current: Node<Record> | null = this.#array[index];
+    let current: Node<KeyValuePair> | null = this.#array[index];
 
     if (current.value.key === key) {
       this.#array[index] = current.next;
@@ -177,7 +177,7 @@ export class HashMap {
       if (bucket === null) {
         continue;
       }
-      let current: Node<Record> | null = bucket;
+      let current: Node<KeyValuePair> | null = bucket;
       while (current) {
         keys.push(current.value.key);
         current = current.next;
@@ -194,7 +194,7 @@ export class HashMap {
       if (bucket === null) {
         continue;
       }
-      let current: Node<Record> | null = bucket;
+      let current: Node<KeyValuePair> | null = bucket;
       while (current) {
         values.push(current.value.value);
         current = current.next;
@@ -211,7 +211,7 @@ export class HashMap {
       if (bucket === null) {
         continue;
       }
-      let current: Node<Record> | null = bucket;
+      let current: Node<KeyValuePair> | null = bucket;
       while (current) {
         entries.push([current.value.key, current.value.value]);
         current = current.next;
