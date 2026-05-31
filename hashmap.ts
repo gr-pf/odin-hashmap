@@ -44,25 +44,24 @@ export class HashMap {
 
       if (current.value.key === key) {
         current.value.value = value;
-        return;
+        return 0;
       }
 
       while (current.next) {
         if (current.value.key === key) {
           current.value.value = value;
-          return;
+          return 0;
         }
         current = current.next;
       }
 
       current.next = new Node({ key, value });
     }
+    return 1;
   }
 
   set(key: string, value: any) {
-    this.#setKeyValue(key, value, this.#array);
-
-    this.#length++;
+    this.#length += this.#setKeyValue(key, value, this.#array);
 
     if (this.#length > this.#capacity * this.#loadFactor) {
       const updatedCapatity = this.#capacity * 2;
@@ -141,6 +140,7 @@ export class HashMap {
     if (current.value.key === key) {
       this.#array[index] = current.next;
       current.next = null;
+      this.#length--;
       return true;
     }
 
@@ -151,6 +151,7 @@ export class HashMap {
       if (current.value.key === key) {
         prev.next = current.next;
         current.next = null;
+        this.#length--;
         return true;
       }
       prev = current;
