@@ -48,8 +48,8 @@ export class HashMap {
       }
 
       while (current.next) {
-        if (current.value.key === key) {
-          current.value.value = value;
+        if (current.next.value.key === key) {
+          current.next.value.value = value;
           return 0;
         }
         current = current.next;
@@ -221,5 +221,3 @@ export class HashMap {
     return entries;
   }
 }
-
-// reste à implémenter remove et corriger lors du changement de capacité
