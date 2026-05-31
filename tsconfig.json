@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": ".",
+    "noImplicitAny": true,
+    "module": "es6",
+    "moduleResolution": "bundler",
+    "target": "es6",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "types": ["node"]
+  },
+  "include": ["hashmap.ts", "main.ts", "node.ts"],
+  "exclude": ["node_modules"]
+}
