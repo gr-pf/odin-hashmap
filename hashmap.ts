@@ -127,8 +127,37 @@ export class HashMap {
   }
 
   remove(key: string) {
-    // à implémenter
-    // takes a key as an argument. If the given key is in the hash map, it should remove the entry with that key and return true. If the key isn’t in the hash map, it should return false.
+    const index = this.hash(key);
+    if (index < 0 || index >= this.#capacity) {
+      throw new Error("Trying to access index out of bounds");
+    }
+
+    if (this.#array[index] === null) {
+      return false;
+    }
+
+    let current: Node | null = this.#array[index];
+
+    if (current.value.key === key) {
+      this.#array[index] = current.next;
+      current.next = null;
+      return true;
+    }
+
+    let prev = current;
+    current = current.next;
+
+    while (current) {
+      if (current.value.key === key) {
+        prev.next = current.next;
+        current.next = null;
+        return true;
+      }
+      prev = current;
+      current = current.next;
+    }
+
+    return false;
   }
 
   length() {
