@@ -1,6 +1,6 @@
-export class Node {
+export class Node<T> {
   constructor(
-    public value: any | null = null,
-    public next: Node | null = null,
+    public value: T | null = null,
+    public next: Node<T> | null = null,
   ) {}
 }
