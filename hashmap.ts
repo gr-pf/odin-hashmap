@@ -18,11 +18,6 @@ export class HashMap {
     this.#array = Array(capacity).fill(null);
   }
 
-  /**
-   *
-   * @param {String} key
-   * @returns {Number}
-   */
   hash(key: string) {
     if (typeof key !== "string") {
       throw new TypeError(`key must be a string: ${key} is a ${typeof key}`);
@@ -38,32 +33,34 @@ export class HashMap {
     return hashCode;
   }
 
-  set(key: string, value: any) {
+  #setKeyValue(key: string, value: any, arr: Array<Node | null>) {
     const index = this.hash(key);
 
-    let setValue = false;
-    if (this.#array[index] === null) {
+    if (arr[index] === null) {
       const node = new Node({ key, value });
-      this.#array[index] = node;
-      setValue = true;
+      arr[index] = node;
     } else {
-      let current = this.#array[index];
+      let current = arr[index];
+
       if (current.value.key === key) {
         current.value.value = value;
-        setValue = true;
+        return;
       }
-      while (current.next && !setValue) {
+
+      while (current.next) {
         if (current.value.key === key) {
           current.value.value = value;
-          setValue = true;
+          return;
         }
         current = current.next;
       }
-      if (!setValue) {
-        current.next = new Node({ key, value });
-        setValue = true;
-      }
+
+      current.next = new Node({ key, value });
     }
+  }
+
+  set(key: string, value: any) {
+    this.#setKeyValue(key, value, this.#array);
 
     this.#length++;
 
@@ -72,29 +69,13 @@ export class HashMap {
       const tmpArray = Array(updatedCapatity).fill(null);
 
       for (const bucket of this.#array) {
-        if (bucket === null) {
-          continue;
-        }
         let current = bucket;
 
         while (current) {
           const currentKey = current.value.key;
           const currentValue = current.value.key;
-          const index = this.hash(currentKey);
 
-          if (tmpArray[index] === null) {
-            const node = new Node({ key: currentKey, value: currentValue });
-            tmpArray[index] = node;
-          } else {
-            let currentTmp = tmpArray[index];
-            while (currentTmp.next) {
-              currentTmp = currentTmp.next;
-            }
-            currentTmp.next = new Node({
-              key: currentKey,
-              value: currentValue,
-            });
-          }
+          this.#setKeyValue(currentKey, currentValue, tmpArray);
         }
       }
 
