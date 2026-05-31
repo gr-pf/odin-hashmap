@@ -73,9 +73,11 @@ export class HashMap {
 
         while (current) {
           const currentKey = current.value.key;
-          const currentValue = current.value.key;
+          const currentValue = current.value.value;
 
           this.#setKeyValue(currentKey, currentValue, tmpArray);
+
+          current = current.next;
         }
       }
 
